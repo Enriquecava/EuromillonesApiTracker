@@ -9,10 +9,8 @@ euromillones_bp = Blueprint('euromillones', __name__)
 @euromillones_bp.route('/euromillones', methods=['GET'])
 @jwt_required()
 def euromillones():
-    print(request.args.get())
     email = get_jwt_identity()
     user = User.query.get(email)
-
     if user.requests_left <= 0:
         return jsonify({"error": "Request limit reached"}), 403
 

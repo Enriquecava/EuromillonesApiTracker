@@ -24,7 +24,6 @@ app.register_blueprint(euromillones_bp)
 
 @app.errorhandler(Exception)
 def handle_exception(e):
-    print('estoy aqui')
     path = request.path
     error_text = str(e)
     #log_error(path, error_text)

@@ -1,18 +1,12 @@
 from playwright.async_api import async_playwright
 
 async def get_euromillones(fecha: str):
-    url = "https://www.combinacionganadora.com/euromillones/"
-
+    url = f"https://www.combinacionganadora.com/euromillones/resultados/{fecha}"
     async with async_playwright() as p:
         browser = await p.chromium.launch(headless=True)
         page = await browser.new_page()
         await page.goto(url)
-
-        await page.click("text=Histórico de sorteos")
-        await page.wait_for_selector(".tabla-sorteos")
-        await page.locator("input[name='fechaInicio']").fill(fecha)
-        await page.locator("input[name='fechaFin']").fill(fecha)
-        await page.click("text=Buscar")
+        
         await page.wait_for_selector(".tabla-sorteos .sorteo")
 
         fila = page.locator(".tabla-sorteos .sorteo").first
