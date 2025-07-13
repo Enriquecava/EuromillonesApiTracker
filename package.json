@@ -1,0 +1,19 @@
+{
+  "name": "euromillones-api",
+  "version": "1.0.0",
+  "description": "API to scrape Euromillones results with auth and logging",
+  "main": "app.py",
+  "scripts": {
+    "start": "python app.py"
+  },
+  "dependencies": {
+    "flask": "*",
+    "flask_sqlalchemy": "*",
+    "flask_jwt_extended": "*",
+    "playwright": "*",
+    "google-api-python-client": "*",
+    "google-auth": "*",
+    "google-auth-oauthlib": "*",
+    "google-auth-httplib2": "*"
+  }
+}
