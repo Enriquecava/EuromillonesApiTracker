@@ -1,5 +1,5 @@
 from playwright.async_api import async_playwright
-from scrapper.pom.sorteo_page import SorteoPage
+from scrapper.pom.lottery_page import LotteryPage
 
 async def get_euromillones(fecha: str):
     url = f"https://www.combinacionganadora.com/euromillones/resultados/{fecha}"
@@ -7,11 +7,11 @@ async def get_euromillones(fecha: str):
         browser = await p.chromium.launch(headless=True)
         context = await browser.new_context(record_video_dir="videos/")
         page = await browser.new_page()
-        sorteoPage = SorteoPage(page)
+        lotteryPage = LotteryPage(page)
         await page.goto(url)
         
-        numbers: List[str] = await sorteoPage.getLotteryNumber()
-        stars: List[str] = await sorteoPage.getStarsNumber()
+        numbers: List[str] = await lotteryPage.getLotteryNumber()
+        stars: List[str] = await lotteryPage.getStarsNumber()
         await browser.close()
 
         return {

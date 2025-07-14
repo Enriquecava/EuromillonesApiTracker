@@ -1,13 +1,13 @@
 from playwright.sync_api import Page, Locator
 
-class SorteoPage:
+class LotteryPage:
     def __init__(self, page: Page):
         self.page = page
         self.numberOne: Locator = page.locator('ul[aria-label="Números"] >> li').nth(0)
         self.numberTwo: Locator =  page.locator('ul[aria-label="Números"] >> li').nth(1)
         self.numberThree: Locator = page.locator('ul[aria-label="Números"] >> li').nth(2)
         self.numberFour: Locator = page.locator('ul[aria-label="Números"] >> li').nth(3)
-        self.numberCinco: Locator = page.locator('ul[aria-label="Números"] >> li').nth(4)
+        self.numberFive: Locator = page.locator('ul[aria-label="Números"] >> li').nth(4)
         self.starOne: Locator = page.locator('[title="Estrellas"]').nth(0).locator('..')
         self.starTwo: Locator = page.locator('[title="Estrellas"]').nth(1).locator('..')
 
@@ -28,7 +28,7 @@ class SorteoPage:
         return number
 
     async def  getFithNumber(self):
-        number: str = await self.numberCinco.text_content()
+        number: str = await self.numberFive.text_content()
         return number    
 
     async def  getFirstStar(self):
