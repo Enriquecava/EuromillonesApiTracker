@@ -26,6 +26,7 @@ app.register_blueprint(euromillones_bp)
 def handle_exception(e):
     path = request.path
     error_text = str(e)
+    print(error_text)
     #log_error(path, error_text)
     return jsonify({"error": "Internal server error"}), 500
 
