@@ -3,6 +3,7 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 from models import User, db 
 import asyncio
 from scrapper.scraper import get_euromillones
+from storage import save_result, get_result_by_date
 
 euromillones_bp = Blueprint('euromillones', __name__)
 
@@ -14,15 +15,27 @@ def euromillones():
     if user.requests_left <= 0:
         return jsonify({"error": "Request limit reached"}), 403
 
-    fecha = request.args.get('date')
-    if not fecha:
-        return jsonify({"error": "'fecha' parameter is required"}), 400
+    date = request.args.get('date')
+    
+    if not date:
+        return jsonify({"error": "'date' parameter is required"}), 400
+    result = get_result_by_date(date)
+    if result:
+        user.requests_left -= 1
+        db.session.commit()
+        return {
+            "date": result.date,
+            "numbers": [int(n) for n in result.numbers.split(',')],
+            "stars": [int(s) for s in result.stars.split(',')],
+            "prizes": json.loads(result.prizes) if result.prizes else None
+        }
 
-    resultados = asyncio.run(get_euromillones(fecha))
-    if resultados is None:
+    result = asyncio.run(get_euromillones(date))
+    if result is None:
         return jsonify({"error": "No results found for that date"}), 404
 
+    save_result(date,result['numbers'],result['stars'])
     user.requests_left -= 1
     db.session.commit()
 
-    return jsonify(resultados)
+    return jsonify(result)
