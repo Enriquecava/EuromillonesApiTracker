@@ -19,11 +19,10 @@ auth:bearer {
 }
 
 vars:pre-request {
-  date: 2025-07-04
+  date: 2025-07-01
 }
 
 assert {
   res.status: eq 200
   res.body.date: eq {{date}}
-  : 
 }
