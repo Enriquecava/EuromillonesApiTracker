@@ -10,6 +10,35 @@ class LotteryPage:
         self.numberFive: Locator = page.locator('ul[aria-label="Números"] >> li').nth(4)
         self.starOne: Locator = page.locator('[title="Estrellas"]').nth(0).locator('..')
         self.starTwo: Locator = page.locator('[title="Estrellas"]').nth(1).locator('..')
+        self.prize_category = page.locator('[data-cat=""]')
+        self.prize_money = page.locator('[data-prize=""]')
+
+    async def getNthPrizeCategory(self,value:int):
+        category: str = await self.prize_category.nth(value).text_content()
+        string = category.split('(')[1].split(')')[0]
+        numbers = [int(c) for c in string if c.isdigit()]
+        balls, stars = numbers
+        return [balls,stars]
+    
+    async def getNthPrizeMoney(self,value:int):
+        money: str = await self.prize_money.nth(value).text_content()
+        format_money:str = money.replace(" €", "").replace(".", "").replace(",", ".")
+        return format_money
+
+    async def getPices(self):
+        data={}
+        for i in range(1,13):
+            category= await self.getNthPrizeCategory(i)
+            money = await self.getNthPrizeMoney(i)
+
+            balls_key = str(category[0])
+            stars_key = str(category[1])
+            if balls_key not in data:
+                data[balls_key] = {}
+
+            data[balls_key][stars_key] = money
+        
+        return data
 
     async def  getFirstNumber(self):
         number: str = await self.numberOne.text_content()

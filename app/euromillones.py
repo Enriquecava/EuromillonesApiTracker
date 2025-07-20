@@ -4,6 +4,7 @@ from models import User, db
 import asyncio
 from scrapper.scraper import get_euromillones
 from storage import save_result, get_result_by_date
+import json
 
 euromillones_bp = Blueprint('euromillones', __name__)
 
@@ -20,6 +21,7 @@ def euromillones():
     if not date:
         return jsonify({"error": "'date' parameter is required"}), 400
     result = get_result_by_date(date)
+    
     if result:
         user.requests_left -= 1
         db.session.commit()
@@ -27,14 +29,15 @@ def euromillones():
             "date": result.date,
             "numbers": [int(n) for n in result.numbers.split(',')],
             "stars": [int(s) for s in result.stars.split(',')],
-            "prizes": json.loads(result.prizes) if result.prizes else None
+            "prizes": json.loads(result.prizes) 
         }
 
     result = asyncio.run(get_euromillones(date))
     if result is None:
         return jsonify({"error": "No results found for that date"}), 404
 
-    save_result(date,result['numbers'],result['stars'])
+    save_result(date,result['numbers'],result['stars'], result['prices'])
+    
     user.requests_left -= 1
     db.session.commit()
 
