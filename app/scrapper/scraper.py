@@ -1,9 +1,10 @@
 from playwright.async_api import async_playwright
 from scrapper.pom.lottery_page import LotteryPage
+from storage import save_result, get_result_by_date
 from collections import defaultdict
 
-async def get_euromillones(fecha: str):
-    url = f"https://www.combinacionganadora.com/euromillones/resultados/{fecha}"
+async def get_euromillones(date: str):
+    url = f"https://www.combinacionganadora.com/euromillones/resultados/{date}"
     async with async_playwright() as p:
         browser = await p.chromium.launch(headless=True)
         context = await browser.new_context(record_video_dir="videos/")
@@ -18,9 +19,6 @@ async def get_euromillones(fecha: str):
 
         await browser.close()
 
-        return {
-            "date": fecha,
-            "numbers": numbers,
-            "stars": stars,
-            "prices": data
-        }
+        save_result(date,numbers,stars, data)
+        db.session.commit()
+
