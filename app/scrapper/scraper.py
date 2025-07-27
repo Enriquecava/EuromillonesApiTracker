@@ -4,6 +4,8 @@ from storage import save_result, get_result_by_date
 from typing import List
 from storage import db
 from collections import defaultdict
+import asyncio
+import sys
 
 async def get_euromillones(date: str):
     url = f"https://www.combinacionganadora.com/euromillones/resultados/{date}"
@@ -24,3 +26,6 @@ async def get_euromillones(date: str):
         save_result(date,numbers,stars, data)
         db.session.commit()
 
+if __name__ == '__main__':
+    date = sys.argv[1] if len(sys.argv) > 1 else None
+    asyncio.run(get_euromillones(date))
