@@ -27,4 +27,4 @@ jobs:
       - name: Run scraper with current date
         run: |
           export PYTHONPATH="${PYTHONPATH}:./app"
-          python app/scrapper/scraper.py $(date +'%Y-%m-%d')
+          python app/scrapper/scraper.py 2025-07-22
