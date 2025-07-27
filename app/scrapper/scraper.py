@@ -20,7 +20,7 @@ async def get_euromillones(date: str):
         data = await lotteryPage.getPices()
 
         await browser.close()
-
+        print(f"Data for {numbers} and {stars} on {date}")
         save_result(date,numbers,stars, data)
         db.session.commit()
 
