@@ -1,6 +1,8 @@
 from playwright.async_api import async_playwright
 from scrapper.pom.lottery_page import LotteryPage
 from storage import save_result, get_result_by_date
+from typing import List
+from storage import db
 from collections import defaultdict
 
 async def get_euromillones(date: str):

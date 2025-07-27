@@ -22,6 +22,7 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: run scraper with current date
+      - name: Run scraper with current date
         run: |
-          runapper/scraper.py $(date +'%Y-%m-%d')
+          export PYTHONPATH="${PYTHONPATH}:./app"
+          python app/scrapper/scraper.py $(date +'%Y-%m-%d')
