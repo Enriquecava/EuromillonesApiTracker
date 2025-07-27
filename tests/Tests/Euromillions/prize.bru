@@ -1,0 +1,28 @@
+meta {
+  name: prize
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseURL}}/euromillones?date={{date}}
+  body: none
+  auth: bearer
+}
+
+params:query {
+  date: {{date}}
+}
+
+auth:bearer {
+  token: {{user_token}}
+}
+
+vars:pre-request {
+  date: 2025-07-01
+}
+
+assert {
+  res.status: eq 200
+  res.body.date: eq {{date}}
+}

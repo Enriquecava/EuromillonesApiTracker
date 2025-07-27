@@ -1,0 +1,37 @@
+meta {
+  name: Auth
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseURL}}/auth
+  body: json
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:json {
+  {
+    "email": {{testUser}}
+  }
+}
+
+vars:post-response {
+  user_token: res.body.access_token
+}
+
+assert {
+  res.status: eq 200
+  res.body.user: contains {{testUser}}
+}
+
+tests {
+  test("should be able to login", function () {
+    expect(res.getStatus()).to.equal(200);
+    console.log(res.getBody())
+  });
+}
