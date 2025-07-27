@@ -20,6 +20,7 @@ def euromillones():
     
     if not date:
         return jsonify({"error": "'date' parameter is required"}), 400
+
     result = get_result_by_date(date)
     
     if result:
@@ -32,13 +33,8 @@ def euromillones():
             "prizes": json.loads(result.prizes) 
         }
 
-    result = asyncio.run(get_euromillones(date))
     if result is None:
         return jsonify({"error": "No results found for that date"}), 404
-
-    save_result(date,result['numbers'],result['stars'], result['prices'])
     
-    user.requests_left -= 1
-    db.session.commit()
 
     return jsonify(result)
