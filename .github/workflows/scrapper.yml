@@ -24,4 +24,4 @@ jobs:
 
       - name: run scraper with current date
         run: |
-          python app/scraper.py $(date +'%Y-%m-%d')
+          python app/scrapper/scraper.py $(date +'%Y-%m-%d')
